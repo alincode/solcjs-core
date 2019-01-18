@@ -1,6 +1,6 @@
 {
   "name": "solcjs-core",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "solcjs core",
   "main": "src/index",
   "directories": {
