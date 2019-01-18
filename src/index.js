@@ -6,5 +6,6 @@ module.exports = {
   pretest: require('./pretest'),
   wrapperCompile: require('./wrapperCompile'),
   getCompile: require('./getCompile'),
-  solc: require('./solc')
+  solc: require('./solc'),
+  solcWrapper: require('./solc-wrapper')
 };
