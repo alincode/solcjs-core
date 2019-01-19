@@ -5,7 +5,7 @@ chai.should();
 
 let { v5, v4, v3, v2 } = require('./utils/standard');
 
-describe('output', () => {
+describe('requireCompiler', () => {
 
   it('0.5.1', async () => {
     await v5('v0.5.1-stable-2018.12.03');

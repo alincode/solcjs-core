@@ -2,7 +2,7 @@ require('./utils/mock')();
 
 const chai = require('chai');
 chai.should();
-const solcjsCore = require('../src/');
+const solcjsCore = require('../src');
 
 describe('getVersion', () => {
 

@@ -45,16 +45,6 @@ describe('test', () => {
     }
   });
 
-  it('compile fail', async () => {
-    let sourceCode = 'cc';
-    try {
-      await newCompile(sourceCode);
-    } catch (error) {
-      error.should.be.a('error');
-      error.message.should.be.eq('compile fail');
-    }
-  });
-
   it('compiler error', async () => {
     let compilerV4_25 = await solcjsCore.solc('v0.4.25-stable-2018.09.13');
     const sourceCode = `
