@@ -11,7 +11,7 @@ function getCompile(oldSolc) {
 
     compile = async function (sourcecode = '', getImportContent) {
       if (solcImport.isExistImport(sourcecode)) {
-        if (getImportContent == undefined) throw Error('getContent should be a funcion.');
+        if (getImportContent == undefined) throw Error('you should pass getImportContent function in the second pararmeter.');
       }
 
       let readCallback = await getReadCallback(
