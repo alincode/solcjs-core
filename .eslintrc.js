@@ -6,6 +6,10 @@ module.exports = {
         "node": true,
         "mocha": true
     },
+    "globals": {
+        "versionList": true,
+        "testContract": true
+    },
     "extends": "eslint:recommended",
     "parserOptions": {
         "ecmaVersion": 2017,

@@ -25,6 +25,7 @@ async function v5(version) {
 
   item.should.have.all.keys('name', 'abi', 'sources', 'compiler', 'assembly', 'binary', 'metadata');
   item.name.should.be.a('string');
+  item.name.should.be.eq('NewContract');
   item.abi.should.be.a('array');
   item.sources.should.be.a('object');
 
@@ -106,6 +107,7 @@ async function v4(version) {
   let output = await compiler(sourceCode);
   let item = output[0];
   item.should.have.all.keys('name', 'abi', 'sources', 'compiler', 'assembly', 'binary', 'metadata');
+  item.name.should.be.eq('Greeter');
   item.name.should.be.a('string');
   item.abi.should.be.a('array');
   item.sources.should.be.a('object');
@@ -172,7 +174,7 @@ async function v3(version) {
   let item = output[0];
 
   item.should.have.all.keys('name', 'abi', 'sources', 'compiler', 'assembly', 'binary', 'metadata');
-
+  item.name.should.be.eq('Mortal2');
   item.name.should.be.a('string');
   item.abi.should.be.a('array');
   item.sources.should.be.a('object');
@@ -295,6 +297,7 @@ async function v2(version) {
 
   item.should.have.all.keys('name', 'abi', 'sources', 'compiler', 'assembly', 'binary', 'metadata');
   item.name.should.be.a('string');
+  item.name.should.be.eq('Register');
   item.abi.should.be.a('array');
   // item.sources.should.be.a('object');
 

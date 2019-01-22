@@ -1,7 +1,3 @@
-require('./utils/mock')();
-const chai = require('chai');
-chai.should();
-
 let { v5, v4, v3, v2 } = require('./utils/standard');
 
 describe.skip('compiler', () => {

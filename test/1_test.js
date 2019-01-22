@@ -1,8 +1,3 @@
-require('./utils/mock')();
-
-const chai = require('chai');
-chai.should();
-
 const solcVersion = require('solc-version');
 const solcjsCore = require('../src');
 const solcWrapper = require('../src/solc-wrapper/wrapper');
@@ -14,8 +9,8 @@ describe('test', () => {
   let url;
     
   it('getCompilersource', async () => {
-    version = await solcjsCore.getVersion();
-    url = await solcVersion.version2url(version);
+    version = await solcjsCore.getVersion(versionList);
+    url = await solcVersion.version2url(version, versionList);
     compilersource = await solcjsCore.getCompilersource(url);
     compilersource.substring(0, 10).should.be.eq('var Module');
   });
@@ -45,22 +40,18 @@ describe('test', () => {
     }
   });
 
+  it('getImportContent missing error', async () => {
+    try {
+      await newCompile(testContract.v5WithImport);
+    } catch (error) {
+      error.message.should.be.eq('you should pass getImportContent function in the second pararmeter.');
+    }
+  });
+
   it('compiler error', async () => {
     let compilerV4_25 = await solcjsCore.solc('v0.4.25-stable-2018.09.13');
-    const sourceCode = `
-     contract Mortal {
-      address publi owner;
-      constructor() public { owner = msg.sender; }
-      function kill() public { if (msg.sender == owner) selfdestruct(owner); }
-    }
-     contract Greeter is Mortal {
-      string public greeting;
-      constructor(string memory _greeting) public {
-        greeting = _greeting;
-      }
-    }`;
     try {
-      await compilerV4_25(sourceCode);
+      await compilerV4_25(testContract.v425);
     } catch (error) {
       error.should.have.all.keys('component', 'formattedMessage', 'message', 'type', 'severity', 'sourceLocation');
       error.type.should.be.equal('ParserError');
