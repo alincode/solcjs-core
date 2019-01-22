@@ -155,12 +155,12 @@ function wrapper(_soljson) {
     return compileStandard(newInput, readCallback);
   }
 
-  function versionToSemver() { return translate.versionToSemver(version()); }
+  // function versionToSemver() { return translate.versionToSemver(version()); }
   let license = getLicense();
 
   return {
     version: version,
-    semver: versionToSemver,
+    // semver: versionToSemver,
     license: license,
     compile: compile,
     linkBytecode: linker.linkBytecode
