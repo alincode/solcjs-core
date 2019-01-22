@@ -32,7 +32,7 @@ function solcjs(_version) {
       console.timeEnd('[wrap compiler]');
 
       try {
-        await pretest(newCompile, version);
+        await pretest(newCompile);
         resolve(newCompile);
       } catch (err) { throw new Error('pretest failed'); }
     } catch (error) {
