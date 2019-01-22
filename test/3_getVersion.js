@@ -4,7 +4,7 @@ describe('getVersion', () => {
 
   it('latest version', async () => {
     let version = await solcjsCore.getVersion();
-    version.should.be.eq('v0.5.2-stable-2018.12.19');
+    version.indexOf('stable').should.be.above(-1);
   });
 
   it('assign version', async () => {
