@@ -35,7 +35,6 @@ describe('test', () => {
     try {
       await newCompile(sourceCode);
     } catch (errors) {
-      console.log(errors);
       errors.should.be.a('array');
       errors[0].should.have.all.keys('component', 'formattedMessage', 'message', 'type');
       errors[0].type.should.be.equal('ParserError');
@@ -52,7 +51,7 @@ describe('test', () => {
     }
   });
 
-  it.skip('getImportContent missing error', async () => {
+  it('getImportContent missing error', async () => {
     try {
       await newCompile(testContract.v5WithImport);
     } catch (error) {
