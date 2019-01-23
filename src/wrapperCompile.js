@@ -17,7 +17,6 @@ function wrapperCompile(oldSolc, sourcecode, readCallback) {
   });
 
   function isCompilerFail(output) {
-    console.log(Object.keys(output.contracts));
     return !output.contracts || Object.keys(output.contracts).length == 0;
   }
 }
