@@ -6,19 +6,26 @@ module.exports = {
 
 async function v5(version) {
   let compiler = await solcjs(version);
-
+ 
   const sourceCode = `
-    pragma solidity >0.4.99 <0.6.0;
+  pragma solidity >0.4.99 <0.6.0;
 
-    library OldLibrary {
-      function someFunction(uint8 a) public returns(bool);
+  contract NewContract {
+    int num = 2;
+
+    using ZLibrary for int;
+
+    function addTwo() public {
+      num = num.add(40);
     }
+  }
 
-    contract NewContract {
-      function f(uint8 a) public returns (bool) {
-          return OldLibrary.someFunction(a);
-      }
-    }`;
+  library ZLibrary {
+    function add(int num1, int num2) public view returns(int result) {
+      return num1 + num2;
+    }
+  }
+  `;
 
   let output = await compiler(sourceCode);
   let item = output[0];

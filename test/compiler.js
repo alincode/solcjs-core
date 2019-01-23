@@ -1,8 +1,20 @@
 let { v5, v4, v3, v2 } = require('./utils/standard');
 
-describe.only('compiler', () => {
+describe.skip('compiler', () => {
 
   // ============= 0.5
+
+  // it('0.5.3', async () => {
+  //   await v5('v0.5.3-stable-2019.01.22');
+  // });
+
+  // it('0.5.2', async () => {
+  //   await v5('v0.5.2-stable-2018.12.19');
+  // });
+
+  // it('0.5.1', async () => {
+  //   await v5('v0.5.1-stable-2018.12.03');
+  // });
 
   // it('0.5.1', async () => {
   //   await v5('v0.5.1-stable-2018.12.03');

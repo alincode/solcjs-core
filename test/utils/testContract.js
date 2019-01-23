@@ -30,17 +30,23 @@ module.exports = {
         }
     }
   `,
-  v425: `
-    contract Mortal {
-    address publi owner;
-    constructor() public { owner = msg.sender; }
-    function kill() public { if (msg.sender == owner) selfdestruct(owner); }
-  }
-    contract Greeter is Mortal {
-    string public greeting;
-    constructor(string memory _greeting) public {
-      greeting = _greeting;
+  v5WithError: `
+  pragma solidity >0.4.99 <0.6.0;
+
+  contract NewContract {
+    int num = 2;
+
+    using ZLibrary for int;
+
+    function addTwo() {
+      num = num.add(40);
     }
-  }`
-  
+  }
+
+  library ZLibrary {
+    function add(int num1, int num2) view returns(int result) {
+      return num1 + num2;
+    }
+  }
+  `
 };
