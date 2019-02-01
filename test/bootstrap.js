@@ -1,4 +1,4 @@
-require('./utils/mock')();
+require('solcjs-mock')();
 
 global.testContract = require('./utils/testContract');
 global.versionList = JSON.stringify(require('./utils/list.json'));

@@ -43,7 +43,8 @@
     "fake-indexeddb": "^2.0.4",
     "mocha": "^5.2.0",
     "mock-browser": "^0.92.14",
-    "nyc": "^13.1.0"
+    "nyc": "^13.1.0",
+    "solcjs-mock": "0.0.1"
   },
   "dependencies": {
     "ajax-caching": "^0.1.2",

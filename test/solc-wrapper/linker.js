@@ -1,4 +1,4 @@
-require('../utils/mock')();
+require('solcjs-mock')();
 
 const chai = require('chai');
 chai.should();
