@@ -10,7 +10,7 @@ module.exports = standardTranslateJsonCompilerOutput;
 //   });
 // }
 
-function standardTranslateJsonCompilerOutput ({ version, url }, data) {
+function standardTranslateJsonCompilerOutput({ version, url }, data) {
   if (isMatchVersion(version, '0.1')) throw Error('don\'t support v0.1.x version.');
 
   try {
@@ -21,21 +21,21 @@ function standardTranslateJsonCompilerOutput ({ version, url }, data) {
         functionHashes,
       } = contract;
 
-      const metadata = getMetadata(contract, name);
+      const metadata = getMetadata(contract, name, version);
 
       var compilation = {
-        name: getName(contract, name),
-        abi: getABI(contract, name),
+        name: getName(contract, name, version),
+        abi: getABI(contract, name, version),
         sources: getSource(data, metadata, version, name),
         compiler: getCompile(metadata, version, url, name),
         assembly: {
-          assembly: getAssembly(contract, name),
+          assembly: getAssembly(contract, name, version),
           opcodes: getOpcodes(contract)
         },
         binary: {
           bytecodes: {
-            bytecode: getBytecode(contract, name),
-            runtimeBytecode: getRuntimeBytecode(contract, name)
+            bytecode: getBytecode(contract, name, version),
+            runtimeBytecode: getRuntimeBytecode(contract, name, version)
           },
           sourcemap: {
             srcmap: getSrcmap(contract, version),
@@ -43,11 +43,11 @@ function standardTranslateJsonCompilerOutput ({ version, url }, data) {
           },
         },
         metadata: {
-          ast: getAST(name, data),
+          ast: getAST(name, data, version),
           devdoc: getDevDoc(contract, metadata, version),
           userdoc: getUserDoc(contract, metadata, version),
           functionHashes,
-          gasEstimates: getGasEstimates(contract, name),
+          gasEstimates: getGasEstimates(contract, name, version),
           analysis: (() => {
             return getAnalysis(data.errors);
           })()
@@ -59,17 +59,18 @@ function standardTranslateJsonCompilerOutput ({ version, url }, data) {
     });
     return output;
   } catch (error) {
+    console.error(error);
     console.error('[ERROR] parse standard output error');
     throw error;
   }
 }
 
-function isNewVersion(name) {
-  return name === 'MyContract';
+function isNewVersion(version) {
+  return isMatchVersion(version, '0.5', '0.4');
 }
 
-function getName(contract, name) {
-  return isNewVersion(name) ? Object.keys(contract)[0] : name;
+function getName(contract, name, version) {
+  return isNewVersion(version) ? Object.keys(contract)[0] : name;
 }
 
 function getAnalysis(errors) {
@@ -104,21 +105,21 @@ function getSrcmap(contract, version) {
   }
 }
 
-function getBytecode(contract, name) {
-  if (isNewVersion(name)) {
-    let name = Object.keys(contract)[0];
-    return contract[name].evm.bytecode.object;
+function getBytecode(contract, name, version) {
+  if (isNewVersion(version)) {
+    let name2 = Object.keys(contract)[0];
+    return contract[name2].evm.bytecode.object;
   } else {
     return contract.bytecode;
   }
 }
 
-function getRuntimeBytecode(contract, name) {
-  if (isNewVersion(name)) {
-    let name = Object.keys(contract)[0];
-    return contract[name].evm.deployedBytecode.object;
+function getRuntimeBytecode(contract, name, version) {
+  if (isNewVersion(version)) {
+    let name2 = Object.keys(contract)[0];
+    return contract[name2].evm.deployedBytecode.object;
   } else {
-    return contract.runtimeBytecode; 
+    return contract.runtimeBytecode;
   }
 }
 
@@ -149,8 +150,8 @@ function getOpcodes(contract) {
   }
 }
 
-function getAssembly(contract, name) {
-  if (isNewVersion(name)) {
+function getAssembly(contract, name, version) {
+  if (isNewVersion(version)) {
     let name = Object.keys(contract)[0];
     return contract[name].evm.legacyAssembly;
   } else {
@@ -158,8 +159,8 @@ function getAssembly(contract, name) {
   }
 }
 
-function getGasEstimates(contract, name) {
-  if (isNewVersion(name)) {
+function getGasEstimates(contract, name, version) {
+  if (isNewVersion(version)) {
     let name = Object.keys(contract)[0];
     return contract[name].evm.gasEstimates;
   } else {
@@ -167,8 +168,8 @@ function getGasEstimates(contract, name) {
   }
 }
 
-function getAST(name, data) {
-  return isNewVersion(name) ? data.sources[name].ast : data.sources[''].AST;
+function getAST(name, data, version) {
+  return isNewVersion(version) ? data.sources[name].ast : data.sources[''].AST;
 }
 
 function getUserDoc(contract, metadata, version) {
@@ -198,20 +199,20 @@ function getDevDoc(contract, metadata, version) {
   }
 }
 
-function getABI(contract, name) {
-  if (isNewVersion(name)) {
-    let name = Object.keys(contract)[0];
-    return contract[name].abi;
+function getABI(contract, name, version) {
+  if (isNewVersion(version)) {
+    let name2 = Object.keys(contract)[0];
+    return contract[name2].abi;
   } else {
     return JSON.parse(contract.interface);
-  } 
+  }
 }
 
-function getMetadata(contract, name) {
-  if (isNewVersion(name)) {
-    let name = Object.keys(contract)[0];
+function getMetadata(contract, name, version) {
+  if (isNewVersion(version)) {
+    let name2 = Object.keys(contract)[0];
     // let { metadata, abi, evm } 
-    let { metadata } = contract[name];
+    let { metadata } = contract[name2];
     metadata = JSON.parse(metadata);
     // console.log('=== metadata ====');
     // console.log(metadata);
@@ -223,7 +224,7 @@ function getMetadata(contract, name) {
 
 function getCompile(metadata, version, url, name) {
   let language, evmVersion, optimizer, runs;
-  if (isNewVersion(name)) {
+  if (isNewVersion(version)) {
     language = metadata.language.toLowerCase();
     evmVersion = metadata.settings.evmVersion;
     optimizer = metadata.settings.optimizer.enabled;
@@ -259,13 +260,13 @@ function getSource(data, metadata, version, name) {
       libraries: metadata.settings.libraries,
       sourcelist: undefined
     };
-  // } else if (isMatchVersion(version, '0.4')) {
-  //   sources = {
-  //     sourcecode: metadata.sources[''],
-  //     compilationTarget: metadata.settings.compilationTarget[''],
-  //     remappings: metadata.settings.remappings,
-  //     libraries: metadata.settings.libraries,
-  //     sourcelist: data.sourceList
+    // } else if (isMatchVersion(version, '0.4')) {
+    //   sources = {
+    //     sourcecode: metadata.sources[''],
+    //     compilationTarget: metadata.settings.compilationTarget[''],
+    //     remappings: metadata.settings.remappings,
+    //     libraries: metadata.settings.libraries,
+    //     sourcelist: data.sourceList
     // };
   } else if (isMatchVersion(version, '0.3')) {
     sources = {
