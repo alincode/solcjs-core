@@ -213,9 +213,9 @@ function getMetadata(contract, name, version) {
     let name2 = Object.keys(contract)[0];
     // let { metadata, abi, evm } 
     let { metadata } = contract[name2];
-    metadata = JSON.parse(metadata);
     // console.log('=== metadata ====');
     // console.log(metadata);
+    if (metadata) metadata = JSON.parse(metadata);
     return metadata;
   } else {
     return;
@@ -225,10 +225,12 @@ function getMetadata(contract, name, version) {
 function getCompile(metadata, version, url, name) {
   let language, evmVersion, optimizer, runs;
   if (isNewVersion(version)) {
-    language = metadata.language.toLowerCase();
-    evmVersion = metadata.settings.evmVersion;
-    optimizer = metadata.settings.optimizer.enabled;
-    runs = metadata.settings.optimizer.runs;
+    if (metadata) {
+      language = metadata.language.toLowerCase();
+      evmVersion = metadata.settings.evmVersion;
+      optimizer = metadata.settings.optimizer.enabled;
+      runs = metadata.settings.optimizer.runs;
+    }
   } else {
     language = 'solidity';
     // evmVersion = metadata.settings.evmVersion;
@@ -250,6 +252,7 @@ function getSource(data, metadata, version, name) {
   let sources = {};
 
   if (isMatchVersion(version, '0.5', '0.4')) {
+    if (!metadata) return sources;
     sources = {
       sourcecode: {
         keccak256: getKeccak256(metadata, version, name),
