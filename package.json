@@ -47,8 +47,8 @@
     "solcjs-mock": "0.0.1"
   },
   "dependencies": {
-    "ajax-caching": "^0.1.2",
-    "solc-import": "0.0.1",
+    "ajax-caching": "^0.2.0",
+    "solc-import": "^0.0.2",
     "solc-version": "^0.2.0"
   }
 }
