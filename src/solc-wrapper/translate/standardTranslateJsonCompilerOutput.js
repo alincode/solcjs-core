@@ -178,6 +178,7 @@ function getUserDoc(contract, metadata, version) {
       let name = Object.keys(contract)[0];
       return contract[name].userdoc;
     } else if (isMatchVersion(version, '0.4')) {
+      if (!metadata.output) return;
       return metadata.output.userdoc;
     } else {
       return;
@@ -193,6 +194,8 @@ function getDevDoc(contract, metadata, version) {
     let name = Object.keys(contract)[0];
     return contract[name].devdoc;
   } else if (isMatchVersion(version, '0.4')) {
+    if (!metadata.output) return;
+    if (JSON.stringify(metadata.output.devdoc.methods) == '{}') return;
     return metadata.output.devdoc;
   } else {
     return;
